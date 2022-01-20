@@ -1145,7 +1145,7 @@ class PartyMeta(MetaBase):
                 info['tournamentId'],
                 info['eventWindowId'],
                 info['regionId'],
-                info['mnemonic'])
+                info.get('mnemonic', ''))
 
     @property
     def squad_fill(self) -> bool:

@@ -1152,6 +1152,10 @@ class PartyMeta(MetaBase):
         return self.get_prop('Default:AthenaSquadFill_b')
 
     @property
+    def private_match(self) -> bool:
+        return self.get_prop('Default:AthenaPrivateMatch_b')
+
+    @property
     def privacy(self) -> Optional[PartyPrivacy]:
         raw = self.get_prop('Default:PrivacySettings_j')
         curr_priv = raw['PrivacySettings']
@@ -1214,6 +1218,10 @@ class PartyMeta(MetaBase):
 
     def set_fill(self, val: str) -> Dict[str, Any]:
         key = 'Default:AthenaSquadFill_b'
+        return {key: self.set_prop(key, (str(val)).lower())}
+
+    def set_private_match(self, val: str) -> Dict[str, Any]:
+        key = 'Default:AthenaPrivateMatch_b'
         return {key: self.set_prop(key, (str(val)).lower())}
 
     def set_privacy(self, privacy: dict) -> Tuple[dict, list]:
@@ -3070,6 +3078,11 @@ class PartyBase:
         return self.meta.squad_fill
 
     @property
+    def private_match(self) -> bool:
+        """:class:`bool`: ``True`` if match is private else ``False``."""
+        return self.meta.private_match
+
+    @property
     def privacy(self) -> PartyPrivacy:
         """:class:`PartyPrivacy`: The currently set privacy of this party."""
         return self.meta.privacy
@@ -4029,6 +4042,31 @@ class ClientParty(PartyBase, Patchable):
             raise Forbidden('You have to be leader for this action to work.')
 
         prop = self.meta.set_fill(val=value)
+        if not self.edit_lock.locked():
+            return await self.patch(updated=prop)
+
+    async def set_private_match(self, value: bool) -> None:
+        """|coro|
+
+        Sets the private match of the party.
+
+        Parameters
+        ----------
+        value: :class:`bool`
+            What to set the private match status to.
+
+            **True** sets it to 'Private Game'
+            **False** sets it to 'Public Game'
+
+        Raises
+        ------
+        Forbidden
+            The client is not the leader of the party.
+        """
+        if self.me is not None and not self.me.leader:
+            raise Forbidden('You have to be leader for this action to work.')
+
+        prop = self.meta.set_private_match(val=value)
         if not self.edit_lock.locked():
             return await self.patch(updated=prop)
 

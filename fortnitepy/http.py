@@ -664,6 +664,12 @@ class HTTPClient:
                     raise
 
                 code = exc.message_code
+                log.warning('Error for {0} {1}. Code: {2}, Status: {3}'.format(  # noqa
+                    method,
+                    url,
+                    code,
+                    exc.status
+                ))
 
                 if graphql:
                     gql_server_error = exc.raw.get('errorStatus') in {500, 502}
@@ -737,6 +743,11 @@ class HTTPClient:
 
                 elif code == 'errors.com.epicgames.common.throttled' or exc.status == 429:  # noqa
                     retry_after = self.get_retry_after(exc)
+                    log.warning('Received throttle for {0} {1}. Retry after: {2}'.format(  # noqa
+                        method,
+                        url,
+                        retry_after
+                    ))
                     if retry_after is not None and cfg.handle_rate_limits:
                         if retry_after <= cfg.max_retry_after:
                             sleep_time = retry_after + 0.5
@@ -762,7 +773,7 @@ class HTTPClient:
                     if cfg.max_wait_time and total_slept > cfg.max_wait_time:
                         raise
 
-                    log.debug('Retrying {0} {1} in {2:.2f}s.'.format(
+                    log.warning('Retrying {0} {1} in {2:.2f}s.'.format(
                         method,
                         url,
                         sleep_time

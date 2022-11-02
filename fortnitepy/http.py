@@ -329,6 +329,10 @@ class StatsproxyPublicService(Route):
     BASE = 'https://statsproxy-public-service-live.ol.epicgames.com'
     AUTH = 'FORTNITE_ACCESS_TOKEN'
 
+class LinksPublicService(Route):
+    BASE = 'https://links-public-service-live.ol.epicgames.com'
+    AUTH = 'FORTNITE_ACCESS_TOKEN'
+
 
 def create_aiohttp_closed_event(session) -> asyncio.Event:
     """Work around aiohttp issue that doesn't properly close transports on exit.
@@ -1281,6 +1285,12 @@ class HTTPClient:
 
     async def fortnitecontent_get(self) -> dict:
         r = FortniteContentWebsite('/content/api/pages/fortnite-game')
+        return await self.get(r)
+
+    async def fetch_mnemonic(self,
+                             mnemonic: str) -> dict:
+        r = LinksPublicService('/links/api/fn/mnemonic/{mnemonic}',
+                               mnemonic=mnemonic)
         return await self.get(r)
 
     ###################################

@@ -182,7 +182,7 @@ class StatsV2(_StatsBase):
         result = {}
         for fullname, stat in self.raw['stats'].items():
             if not fullname.startswith('br_'):
-                return
+                continue
 
             parts = fullname.split('_')
 
@@ -190,7 +190,7 @@ class StatsV2(_StatsBase):
             tn_prefix = parts[1] == 'tournament'
 
             if arena_prefix or tn_prefix:
-                return
+                continue
                 # name = parts[2]
                 # inp = parts[3]
                 # playlist = '_'.join(parts[6:])

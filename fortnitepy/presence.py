@@ -320,11 +320,14 @@ class Presence:
         # The only expections are avatar and party which could have
         # values as long as in_kairos is True.
 
-        kairos_p = raw_properties.get('KairosProfile_s', {})
-        if kairos_p:
-            kairos_p = json.loads(kairos_p)
-        else:
-            kairos_p = raw_properties.get('KairosProfile_j', {})
+        # Pat: For some reason this property is now used for game play stats (numKills etc)
+        # Using an empty object for now
+        # kairos_p = raw_properties.get('KairosProfile_s', {})
+        # if kairos_p:
+        #    kairos_p = json.loads(kairos_p)
+        # else:
+        #    kairos_p = raw_properties.get('KairosProfile_j', {})
+        kairos_p = {}
 
         background = kairos_p.get('avatarBackground')
         if background and not isinstance(background, list):
@@ -375,10 +378,12 @@ class Presence:
         if self.server_player_count is not None:
             self.server_player_count = int(self.server_player_count)
 
-        if 'FortGameplayStats_j' in raw_properties:
+        # Pat: For some reason this data is now in KairosProfile
+        # if 'FortGameplayStats_j' in raw_properties:
+        if 'KairosProfile_j' in raw_properties:
             self.gameplay_stats = PresenceGameplayStats(
                 self.friend,
-                raw_properties['FortGameplayStats_j'],
+                raw_properties['KairosProfile_j'],
                 players_alive
             )
         else:

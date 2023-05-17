@@ -50,6 +50,8 @@ class RankedProgress:
         self.type_to_ranked_progress = {
             RankingType(ranked_progress['rankingType']): SingleRankedProgress(client, ranked_progress)
             for ranked_progress in data
+            if (ranked_progress['rankingType'] in [RankingType.ZERO_BUILD.value, RankingType.BATTLE_ROYALE.value]
+                and ranked_progress['gameId'] == 'fortnite')
         }
 
     def __repr__(self):

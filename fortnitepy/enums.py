@@ -104,7 +104,7 @@ class PartyDiscoverability(Enum):
 class PartyJoinability(Enum):
     OPEN              = 'OPEN'
     INVITE_ONLY       = 'INVITE_ONLY'
-    INVITE_AND_FORMER = 'INVITE_AND_FORMER' 
+    INVITE_AND_FORMER = 'INVITE_AND_FORMER'
 
 
 class DefaultCharactersChapter1(Enum):
@@ -267,3 +267,8 @@ class KairosBackgroundColorPreset(Enum):
 
 class StatsCollectionType(Enum):
     FISH = 'collection_fish'
+
+
+class RankingType(Enum):
+    BATTLE_ROYALE = 'ranked-br'
+    ZERO_BUILD = 'ranked-zb'

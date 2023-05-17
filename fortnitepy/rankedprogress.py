@@ -58,13 +58,13 @@ class RankedProgress:
         return ('<RankedProgress battle_royale_ranked_progress={0.battle_royale_ranked_progress} '
                 'zero_build_ranked_progress={0.zero_build_ranked_progress}>'.format(self))
 
-    def get_ranked_progress_for_type(self, ranking_type: RankingType) -> SingleRankedProgress:
+    def for_type(self, ranking_type: RankingType) -> SingleRankedProgress:
         return self.type_to_ranked_progress[ranking_type]
 
     @property
-    def battle_royale_ranked_progress(self) -> SingleRankedProgress:
-        return self.get_ranked_progress_for_type(RankingType.BATTLE_ROYALE)
+    def battle_royale(self) -> SingleRankedProgress:
+        return self.for_type(RankingType.BATTLE_ROYALE)
 
     @property
-    def zero_build_ranked_progress(self) -> SingleRankedProgress:
-        return self.get_ranked_progress_for_type(RankingType.ZERO_BUILD)
+    def zero_build(self) -> SingleRankedProgress:
+        return self.for_type(RankingType.ZERO_BUILD)

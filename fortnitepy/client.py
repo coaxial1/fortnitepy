@@ -40,6 +40,7 @@ from .errors import (PartyError, HTTPException, NotFound, Forbidden,
                      DuplicateFriendship, FriendshipRequestAlreadySent,
                      MaxFriendshipsExceeded, InviteeMaxFriendshipsExceeded,
                      InviteeMaxFriendshipRequestsExceeded, PartyIsFull)
+from .rankedprogress import RankedProgress
 from .xmpp import XMPPClient
 from .http import HTTPClient
 from .user import (ClientUser, User, BlockedUser, SacSearchEntryUser,
@@ -2499,6 +2500,11 @@ class Client:
             end_time = end_time.value
 
         return start_time, end_time
+
+    async def fetch_ranked_progress(self, user_id: str, *,
+                                    ends_after: Optional[datetime.datetime] = None) -> RankedProgress:
+        data = await self.http.ranked_get_progress(user_id, ends_after=ends_after)
+        return RankedProgress(self, data)
 
     async def fetch_br_stats(self, user_id: str, *,
                              start_time: Optional[DatetimeOrTimestamp] = None,

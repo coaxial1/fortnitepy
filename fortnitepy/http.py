@@ -23,6 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import datetime
 
 import aiohttp
 import asyncio
@@ -114,6 +115,7 @@ class HTTPRetryConfig:
         unrealistically high wait times. Defaults to ``20``. *Only matters
         when ``handle_capacity_throttling`` is ``True``*
     """
+
     def __init__(self, **kwargs):
         self.max_retry_attempts = kwargs.get('max_retry_attempts', 5)
         self.max_wait_time = kwargs.get('max_wait_time', 65)
@@ -315,6 +317,11 @@ class FriendsPublicService(Route):
     AUTH = 'FORTNITE_ACCESS_TOKEN'
 
 
+class FortniteHabaneroService(Route):
+    BASE = 'https://fn-service-habanero-live-public.ogs.live.on.epicgames.com'
+    AUTH = 'FORTNITE_ACCESS_TOKEN'
+
+
 class PartyService(Route):
     BASE = 'https://party-service-prod.ol.epicgames.com'
     AUTH = 'FORTNITE_ACCESS_TOKEN'
@@ -411,7 +418,7 @@ class HTTPClient:
 
     @staticmethod
     async def json_or_text(response: aiohttp.ClientResponse) -> Union[str,
-                                                                      dict]:
+    dict]:
         text = await response.text(encoding='utf-8')
         if 'application/json' in response.headers.get('content-type', ''):
             return json.loads(text)
@@ -527,9 +534,9 @@ class HTTPClient:
             if isinstance(data, str):
                 m = GRAPHQL_HTML_ERROR_PATTERN.search(data)
                 error_data = ({
-                    'serviceResponse': '',
-                    'message': 'Unknown reason' if m is None else m.group(1)
-                },)
+                                  'serviceResponse': '',
+                                  'message': 'Unknown reason' if m is None else m.group(1)
+                              },)
                 if m is not None:
                     error_data[0]['serviceResponse'] = json.dumps({
                         'errorStatus': int(m.group(2))
@@ -539,11 +546,11 @@ class HTTPClient:
                 if data['status'] >= 400:
                     message = data['message']
                     error_data = ({
-                        'serviceResponse': json.dumps({
-                            'errorCode': message
-                        }),
-                        'message': message
-                    },)
+                                      'serviceResponse': json.dumps({
+                                          'errorCode': message
+                                      }),
+                                      'message': message
+                                  },)
             else:
                 error_data = None
                 for child_data in data:
@@ -768,8 +775,8 @@ class HTTPClient:
                                 sleep_time = backoff
 
                 elif (code == 'errors.com.epicgames.common.concurrent_modification_error'  # noqa
-                        or code == 'errors.com.epicgames.common.server_error'
-                        or gql_server_error):  # noqa
+                      or code == 'errors.com.epicgames.common.server_error'
+                      or gql_server_error):  # noqa
                     sleep_time = 0.5 + (tries - 1) * 2
 
                 if sleep_time > 0:
@@ -825,7 +832,7 @@ class HTTPClient:
         return await self.fn_request('PUT', route, auth, **kwargs)
 
     async def graphql_request(self, graphql: Union[GraphQLRequest,
-                                                   List[GraphQLRequest]],
+    List[GraphQLRequest]],
                               auth: Optional[str] = None,
                               **kwargs: Any) -> Any:
         return await self.fn_request('POST', EpicGamesGraphQL(), auth, graphql,
@@ -1044,7 +1051,7 @@ class HTTPClient:
             '/account/api/public/corrections/dateOfBirth',
         )
 
-        return await self.put(r, json={ 'continuation': continuation, 'dateOfBirth': date_of_birth }, auth=auth)
+        return await self.put(r, json={'continuation': continuation, 'dateOfBirth': date_of_birth}, auth=auth)
 
     async def account_generate_device_auth(self, client_id: str) -> dict:
         r = AccountPublicService(
@@ -1453,6 +1460,22 @@ class HTTPClient:
             stat=stat
         )
         return await self.get(r)
+
+    ###################################
+    #             Ranked              #
+    ###################################
+
+    async def ranked_get_progress(self, user_id: str, *,
+                                  ends_after: Optional[datetime.datetime]) -> List[dict]:
+        params = {}
+        if ends_after:
+            params['endsAfter'] = ends_after.isoformat()
+
+        r = FortniteHabaneroService(
+            '/api/v1/games/fortnite/trackprogress/{user_id}',
+            user_id=user_id
+        )
+        return await self.get(r, params=params)
 
     ###################################
     #             Party               #

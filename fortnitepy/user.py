@@ -23,12 +23,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-
+import datetime
 import logging
 
 from aioxmpp import JID
 from typing import TYPE_CHECKING, Any, List, Optional
 from .enums import UserSearchPlatform, UserSearchMatchType, StatsCollectionType
+from .rankedprogress import RankedProgress
 from .typedefs import DatetimeOrTimestamp
 from .errors import Forbidden
 
@@ -239,6 +240,10 @@ class UserBase:
             start_time=start_time,
             end_time=end_time
         )
+
+    async def fetch_ranked_progress(self, *,
+                                    ends_after: Optional[datetime.datetime] = None) -> RankedProgress:
+        return await self.client.fetch_ranked_progress(self.id, ends_after=ends_after)
 
     async def fetch_br_stats_collection(self, collection: StatsCollectionType,
                                         start_time: Optional[DatetimeOrTimestamp] = None,  # noqa

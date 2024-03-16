@@ -601,6 +601,7 @@ class PartyMemberMeta(MetaBase):
                     'emoteItemDef': 'None',
                     'emoteEKey': '',
                     'emoteSection': -1,
+                    'multipurposeEmoteData': -1,
                 },
             }),
             'Default:NumAthenaPlayersLeft_U': '0',
@@ -640,9 +641,7 @@ class PartyMemberMeta(MetaBase):
             }),
             'Default:AthenaCosmeticLoadout_j': json.dumps({
                 'AthenaCosmeticLoadout': {
-                    'characterDef': ("AthenaCharacterItemDefinition'/Game/"
-                                     "Athena/Items/Cosmetics/Characters/"
-                                     "{0}.{0}'".format(self.def_character)),
+                    'characterPrimaryAssetId': ("AthenaCharacter:{0}'".format(self.def_character)),
                     'characterEKey': '',
                     'backpackDef': 'None',
                     'backpackEKey': '',
@@ -653,6 +652,19 @@ class PartyMemberMeta(MetaBase):
                     'contrailDef': 'None',
                     'contrailEKey': '',
                     'scratchpad': [],
+                    'cosmeticStats': [{
+                        'statName': 'HabaneroProgression',
+                        'statValue': 0,
+                    }, {
+                        'statName': 'TotalVictoryCrowns',
+                        'statValue': 0,
+                    }, {
+                        'statName': 'TotalRoyalRoyales',
+                        'statValue': 0,
+                    }, {
+                        'statName': 'HasCrown',
+                        'statValue': 0,
+                    }],
                 },
             }),
             'Default:AthenaCosmeticLoadoutVariants_j': json.dumps({
@@ -701,7 +713,120 @@ class PartyMemberMeta(MetaBase):
             'Default:FeatDefinition_s': 'None',
             'Default:SidekickStatus_s': 'None',
             'Default:VoiceChatStatus_s': 'Disabled',
+            'Default:SelectedIsland_j': json.dumps({
+                'SelectedIsland': {
+                    'linkId': {
+                        'mnemonic': '',
+                        'version': -1
+                    },
+                    'worldId': {
+                        'iD': '',
+                        'ownerId': 'INVALID',
+                        'name': ''
+                    },
+                    'sessionId': '',
+                    'joinInfo': {
+                        'islandJoinability': 'CanNotBeJoinedOrWatched',
+                        'bIsWorldJoinable': False,
+                        'sessionKey': '',
+                    }
+                },
+            }),
+            "Default:AllSelectInfo_j": json.dumps({
+                "AllSelectInfo": {
+                    "suggestedLink": {"mnemonic": "", "version": -1},
+                    "suggestedFill": "None",
+                    "suggestedPrivateMatch": "None"
+                }
+            }),
+            "urn:epic:member:dn_s": self.member.display_name,
+            "Default:PackedState_j": json.dumps({
+                "PackedState": {
+                    "subGame": "Athena",
+                    "location": "PreLobby",
+                    "gameMode": "None",
+                    "voiceChatStatus": "Enabled",
+                    "hasCompletedSTWTutorial": False,
+                    "hasPurchasedSTW": False,
+                    "platformSupportsSTW": True,
+                    "bReturnToLobbyAndReadyUp": False,
+                    "bAnyoneChangeSelectedExperience": False,
+                    "bDownloadOnDemandActive": False,
+                    "bIsPartyLFG": False,
+                    "bShouldRecordPartyChannel": False,
+                    "bReadyForTravel": False,
+                    "bIsInAllSelectExperiment": True
+                }
+            }),
+            "Default:FortCommonMatchmakingData_j": json.dumps({
+                "FortCommonMatchmakingData": {
+                    "req": {
+                        "linkId": {"mnemonic": "", "version": -1},
+                        "matchmakingTransaction": "NotReady",
+                        "rqstr": "INVALID",
+                        "v": 0
+                    },
+                    "v": 0,
+                    "res": "N"
+                }
+            }),
+            "Default:SpectateInfo_j": json.dumps({
+                "SpectateInfo": {
+                    "gameSessionId": "",
+                    "gameSessionKey": ""
+                }
+            }),
+            "Default:bIsPartyUsingPartySignal_b": "false",
+            # "Default:FortMatchmakingMemberData_j": json.dumps({
+            #     "FortMatchmakingMemberData": {
+            #         "req": {
+            #             "mbrs": [{
+            #                 "iD": self.member.id,
+            #                 "r": "N",
+            #                 "g": {
+            #                     "iD": {"mnemonic": "", "version": -1},
+            #                     "t": "X",
+            #                     "ses": "FRONTEND-AC114DD348000124705B598EE971AA70"
+            #                 },
+            #                 "v": 101
+            #             }],
+            #             "rqstr": "6ff3b49520204d578a48d6eda2a0d9c6",
+            #             "v": 1
+            #         },
+            #         "v": 1,
+            #         "res": "N"
+            #     }
+            # }),
+            "Default:DownloadOnDemandProgress_d": "0.000000",
+            "Default:JoinMethod_s": "Creation",
+            "Default:SharedQuests_j": json.dumps({
+                "SharedQuests": {
+                    "bcktMap": {},
+                    "pndQst": ""
+                }
+            }),
+            "Default:MpLoadout_j": json.dumps({
+                "MpLoadout": {
+                    "d": json.dumps({
+                        "sb": {"i": "SparksBass:Sparks_Bass_Generic", "v": {"1": "1"}},
+                        "sg": {"i": "SparksGuitar:Sparks_Guitar_Generic", "v": {"1": "1"}},
+                        "sd": {"i": "SparksDrums:Sparks_Drum_Generic", "v": {"1": "1"}},
+                        "sk": {"i": "SparksKeyboard:Sparks_Keytar_Generic", "v": {"1": "1"}},
+                        "sm": {"i": "SparksMicrophone:Sparks_Mic_Generic", "v": {"1": "1"}},
+                    })
+                }
+            }),
+            "Default:JoinInProgressData_j": json.dumps({
+                "JoinInProgressData": {
+                    "request": {
+                        "target": "INVALID",
+                        "time": 0
+                    },
+                    "responses": []
+                }
+            }),
         }
+
 
         if meta is not None:
             self.update(meta, raw=True)
@@ -731,7 +856,7 @@ class PartyMemberMeta(MetaBase):
     @property
     def outfit(self) -> str:
         base = self.get_prop('Default:AthenaCosmeticLoadout_j')
-        return base['AthenaCosmeticLoadout'].get('characterDef', 'None')
+        return base['AthenaCosmeticLoadout'].get('characterPrimaryAssetId', 'None')
 
     @property
     def backpack(self) -> str:
@@ -997,7 +1122,7 @@ class PartyMemberMeta(MetaBase):
         data = prop['AthenaCosmeticLoadout']
 
         if character is not None:
-            data['characterDef'] = character
+            data['characterPrimaryAssetId'] = character
         if character_ekey is not None:
             data['characterEKey'] = character_ekey
         if backpack is not None:
@@ -1107,7 +1232,7 @@ class PartyMeta(MetaBase):
                 },
             }),
             'Default:RegionId_s': 'EU',
-            'Default:AthenaSquadFill_b': 'true',
+            'Default:AthenaSquadFill_b': 'false',
             'Default:AllowJoinInProgress_b': 'false',
             'Default:LFGTime_s': '0001-01-01T00:00:00.000Z',
             'Default:PartyIsJoinedInProgress_b': 'false',
@@ -1132,6 +1257,67 @@ class PartyMeta(MetaBase):
                     'linkCode': '',
                 }
             }),
+            "Default:CampaignInfo_j": json.dumps({
+                "CampaignInfo": {
+                    "lobbyConnectionStarted": False,
+                    "matchmakingResult": "NotStarted",
+                    "matchmakingState": "NotMatchmaking",
+                    "sessionIsCriticalMission": False,
+                    "zoneTileIndex": -1,
+                    "theaterId": "",
+                    "tileStates": {
+                        "tileStates": [],
+                        "numSetBits": 0
+                    }
+                }
+            }),
+            "urn:epic:cfg:party-type-id_s": "default",
+            "Default:SelectedIsland_j": json.dumps({
+                "SelectedIsland": {
+                    "linkId": {
+                        "mnemonic": "playlist_defaultduo",
+                        "version": -1
+                    },
+                    "worldId": {
+                        "iD": "",
+                        "ownerId": "INVALID",
+                        "name": ""
+                    },
+                    "sessionId": "",
+                    "joinInfo": {
+                        "islandJoinability": "CanNotBeJoinedOrWatched",
+                        "bIsWorldJoinable": False,
+                        "sessionKey": ""
+                    }
+                }
+            }),
+            # "Default:FortCommonMatchmakingData_j": json.dumps({
+            #     "FortCommonMatchmakingData": {
+            #         "current": {
+            #             "linkId": {
+            #                 "mnemonic": "playlist_defaultduo",
+            #                 "version": -1
+            #             },
+            #             "matchmakingTransaction": "NotReady",
+            #             "rqstr": "INVALID",
+            #             "v": 4604
+            #         },
+            #         "commit": "One",
+            #         "data": {
+            #             "req": {
+            #                 "linkId": {
+            #                     "mnemonic": "playlist_defaultduo",
+            #                     "version": -1
+            #                 },
+            #                 "matchmakingTransaction": "NotReady",
+            #                 "rqstr": "INVALID",
+            #                 "v": 4604
+            #             },
+            #             "v": 2,
+            #             "brdcst": "R"
+            #         }
+            #     }
+            # }),
         }
 
         if meta is not None:
@@ -1140,15 +1326,11 @@ class PartyMeta(MetaBase):
         self.meta_ready_event.set()
 
     @property
-    def playlist_info(self) -> Tuple[str, str, str, str, Tuple[str, int]]:
-        base = self.get_prop('Default:PlaylistData_j')
-        info = base['PlaylistData']
+    def playlist_info(self) -> Tuple[str, int]:
+        base = self.get_prop('Default:SelectedIsland_j')
+        info = base['SelectedIsland']
 
-        return (info['playlistName'],
-                info['tournamentId'],
-                info['eventWindowId'],
-                (info.get('linkId', {}).get('mnemonic', ''), info.get('linkId', {}).get('version', 1))
-                )
+        return (info.get('linkId', {}).get('mnemonic', ''), info.get('linkId', {}).get('version', 1))
 
     @property
     def squad_fill(self) -> bool:
@@ -1198,22 +1380,23 @@ class PartyMeta(MetaBase):
                      tournament: Optional[str] = None,
                      event_window: Optional[str] = None,
                      link_id: Optional[Tuple[str, int]] = None) -> Dict[str, Any]:
-        data = (self.get_prop('Default:PlaylistData_j'))['PlaylistData']
+        data = (self.get_prop('Default:SelectedIsland_j'))['SelectedIsland']
 
-        if playlist is not None:
-            data['playlistName'] = playlist
-        if tournament is not None:
-            data['tournamentId'] = tournament
-        if event_window is not None:
-            data['eventWindowId'] = event_window
+        # Current Island does not contain there properties, but we're keeping it just in case
+        # if playlist is not None:
+        #     data['playlistName'] = playlist
+        # if tournament is not None:
+        #     data['tournamentId'] = tournament
+        # if event_window is not None:
+        #     data['eventWindowId'] = event_window
         
         if link_id is not None:
             data['linkId'] = {'mnemonic': link_id[0], 'version': link_id[1]}
         else:
             data['linkId'] = {'mnemonic': '', 'version': 1}
 
-        final = {'PlaylistData': data}
-        key = 'Default:PlaylistData_j'
+        final = {'SelectedIsland': data}
+        key = 'Default:SelectedIsland_j'
         return {key: self.set_prop(key, final)}
 
     def set_region(self, region: Region) -> Dict[str, Any]:
@@ -1231,6 +1414,10 @@ class PartyMeta(MetaBase):
     def set_private_match(self, val: str) -> Dict[str, Any]:
         key = 'Default:AthenaPrivateMatch_b'
         return {key: self.set_prop(key, (str(val)).lower())}
+
+    def set_activity_name(self, val: str) -> Dict[str, Any]:
+        key = 'Default:ActivityName_s'
+        return {key: self.set_prop(key, val)}
 
     def set_privacy(self, privacy: dict) -> Tuple[dict, list]:
         updated = {}
@@ -2178,11 +2365,10 @@ class ClientPartyMember(PartyMemberBase, Patchable):
         """
         if asset is not None:
             if asset != '' and '.' not in asset:
-                asset = ("AthenaCharacterItemDefinition'/Game/Athena/Items/"
-                         "Cosmetics/Characters/{0}.{0}'".format(asset))
+                asset = ("AthenaCharacter:{0}'".format(asset))
         else:
             prop = self.meta.get_prop('Default:AthenaCosmeticLoadout_j')
-            asset = prop['AthenaCosmeticLoadout']['characterDef']
+            asset = prop['AthenaCosmeticLoadout']['characterPrimaryAssetId']
 
         if enlightenment is not None:
             if len(enlightenment) != 2:
@@ -4091,6 +4277,28 @@ class ClientParty(PartyBase, Patchable):
             raise Forbidden('You have to be leader for this action to work.')
 
         prop = self.meta.set_private_match(val=value)
+        if not self.edit_lock.locked():
+            return await self.patch(updated=prop)
+
+    async def set_activity_name(self, value: str) -> None:
+        """|coro|
+
+        Sets the activity name of the party.
+
+        Parameters
+        ----------
+        value: :class:`str`
+            The activity name to set.
+
+        Raises
+        ------
+        Forbidden
+            The client is not the leader of the party.
+        """
+        if self.me is not None and not self.me.leader:
+            raise Forbidden('You have to be leader for this action to work.')
+
+        prop = self.meta.set_activity_name(val=value)
         if not self.edit_lock.locked():
             return await self.patch(updated=prop)
 

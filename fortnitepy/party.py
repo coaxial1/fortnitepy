@@ -923,10 +923,10 @@ class PartyMemberMeta(MetaBase):
         base = self.get_prop('Default:BattlePassInfo_j')
         bp_info = base['BattlePassInfo']
 
-        return (bp_info['bHasPurchasedPass'],
-                bp_info['passLevel'],
-                bp_info['selfBoostXp'],
-                bp_info['friendBoostXp'])
+        return (bp_info.get('bHasPurchasedPass', False),
+                bp_info.get('passLevel', 0),
+                bp_info.get('selfBoostXp', 0),
+                bp_info.get('friendBoostXp', 0))
 
     @property
     def platform(self) -> str:
@@ -1389,7 +1389,7 @@ class PartyMeta(MetaBase):
         #     data['tournamentId'] = tournament
         # if event_window is not None:
         #     data['eventWindowId'] = event_window
-        
+
         if link_id is not None:
             data['linkId'] = {'mnemonic': link_id[0], 'version': link_id[1]}
         else:

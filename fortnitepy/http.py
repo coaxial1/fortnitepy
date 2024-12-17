@@ -397,7 +397,8 @@ def create_aiohttp_closed_event(session) -> asyncio.Event:
 class HTTPClient:
     def __init__(self, client: 'Client', *,
                  connector: aiohttp.BaseConnector = None,
-                 retry_config: Optional[HTTPRetryConfig] = None) -> None:
+                 retry_config: Optional[HTTPRetryConfig] = None,
+                 user_agent_override: Optional[str] = None) -> None:
         self.client = client
         self.connector = connector
         self.retry_config = retry_config or HTTPRetryConfig()
@@ -406,6 +407,7 @@ class HTTPClient:
         self.headers = {}
         self.device_id = self.client.auth.device_id
         self._endpoint_events = {}
+        self.user_agent_override = user_agent_override;
 
         # How many refreshes (max_refresh_attempts) to attempt in
         # a time window (refresh_attempt_window) before closing.
@@ -426,7 +428,7 @@ class HTTPClient:
 
     @property
     def user_agent(self) -> str:
-        return 'Fortnite/{0.client.build} {0.client.os}'.format(self)
+        return self.user_agent_override if self.user_agent_override is not None else 'Fortnite/{0.client.build} {0.client.os}'.format(self)
 
     def get_auth(self, auth: str) -> str:
         u_auth = auth.upper()

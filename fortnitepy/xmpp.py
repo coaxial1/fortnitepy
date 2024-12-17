@@ -448,7 +448,7 @@ class WebsocketXMLStream(aioxmpp.protocol.XMLStream):
 
 
 class XMPPOverWebsocketConnector(aioxmpp.connector.BaseConnector):
-    def __init__(self, client, ws_connector=None):
+    def __init__(self, client: 'Client', ws_connector=None):
         self.client = client
         self.ws_connector = ws_connector
 
@@ -492,10 +492,12 @@ class XMPPOverWebsocketConnector(aioxmpp.connector.BaseConnector):
             logger,
             ws_connector=self.ws_connector
         )
+        headers = {'User-Agent': self.client.http.user_agent}
         await transport.create_connection(
             'wss://{host}'.format(host=host),
             protocols=('xmpp',),
             timeout=10,
+            headers=headers
         )
 
         return transport, stream, await features_future

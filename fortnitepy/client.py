@@ -559,6 +559,8 @@ class Client:
         is set to false, then the client will attempt to reconnect to the party on a
         startup. If :attr:`DefaultPartyMemberConfig.offline_ttl` is exceeded before
         a reconnect is attempted, then the client will create a new party at startup.
+    user_agent: Optional[:class:`str`]
+        The user agent to use for http requests.
 
     Attributes
     ----------
@@ -605,7 +607,8 @@ class Client:
         self.http = HTTPClient(
             self,
             connector=kwargs.get('connector'),
-            retry_config=kwargs.get('http_retry_config')
+            retry_config=kwargs.get('http_retry_config'),
+            user_agent_override=kwargs.get('user_agent'),
         )
         self.http.add_header('Accept-Language', 'en-EN')
         self.xmpp = XMPPClient(self, ws_connector=kwargs.get('ws_connector'))

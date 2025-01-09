@@ -1861,6 +1861,16 @@ class PartyMemberBase(User):
         """
         return self.ready is ReadyState.READY
 
+    def get_raw_data(self) -> dict:
+        """Returns the raw data of this member.
+
+        Returns
+        -------
+        :class:`dict`
+            The raw data of this member.
+        """
+        return self.raw
+
     def is_chatbanned(self) -> bool:
         """:class:`bool`: Whether or not this member is chatbanned."""
         return self.id in getattr(self.party, '_chatbanned_members', {})
@@ -1881,6 +1891,7 @@ class PartyMemberBase(User):
         super()._update(data)
         self.update_role(data.get('role'))
         self.revision = data.get('revision', 0)
+        self.raw = data
 
         connections = data.get('connections', data.get('connection'))
         self._update_connection(connections)

@@ -290,7 +290,7 @@ class Presence:
                  'has_properties', 'avatar', 'homebase_rating', 'lfg',
                  'sub_game', 'in_unjoinable_match', 'playlist', 'party_size',
                  'max_party_size', 'game_session_join_key',
-                 'server_player_count', 'gameplay_stats', 'party')
+                 'server_player_count', 'gameplay_stats', 'party', 'social_status')
 
     def __init__(self, client: 'Client',
                  from_id: str,
@@ -298,6 +298,7 @@ class Presence:
                  available: bool,
                  away: bool,
                  data: dict) -> None:
+        print("PRESENCE OF " + from_id + ": " + json.dumps(data))
         self.client = client
         self.available = available
         self.away = away
@@ -328,6 +329,11 @@ class Presence:
         # else:
         #    kairos_p = raw_properties.get('KairosProfile_j', {})
         kairos_p = {}
+
+        if raw_properties.get('SocialStatus_j') is None:
+            self.social_status = None
+        else:
+            self.social_status = json.loads(raw_properties['SocialStatus_j'])
 
         background = kairos_p.get('avatarBackground')
         if background and not isinstance(background, list):

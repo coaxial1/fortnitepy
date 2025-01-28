@@ -545,7 +545,11 @@ class HTTPClient:
                     })
 
             elif isinstance(data, dict):
-                if data['status'] >= 400:
+                error_data = ({
+                                  'serviceResponse': '',
+                                  'message': 'Unknown reason' if m is None else m.group(1)
+                              },)
+                if 'status' in data and data['status'] >= 400:
                     message = data['message']
                     error_data = ({
                                       'serviceResponse': json.dumps({
@@ -553,6 +557,10 @@ class HTTPClient:
                                       }),
                                       'message': message
                                   },)
+                elif 'errors' in data:
+                    error_data = data['errors']
+                    if not isinstance(error_data, list):
+                        error_data = (error_data,)
             else:
                 error_data = None
                 for child_data in data:

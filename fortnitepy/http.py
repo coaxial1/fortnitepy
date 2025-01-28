@@ -547,7 +547,7 @@ class HTTPClient:
             elif isinstance(data, dict):
                 error_data = ({
                                   'serviceResponse': '',
-                                  'message': 'Unknown reason' if m is None else m.group(1)
+                                  'message': 'Unknown reason'
                               },)
                 if 'status' in data and data['status'] >= 400:
                     message = data['message']

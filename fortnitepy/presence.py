@@ -330,10 +330,15 @@ class Presence:
         #    kairos_p = raw_properties.get('KairosProfile_j', {})
         kairos_p = {}
 
-        if raw_properties.get('SocialStatus_j') is None:
+        social_status = raw_properties.get('SocialStatus_j')
+        if social_status is None:
             self.social_status = None
+        elif isinstance(social_status, str):
+            self.social_status = json.loads(social_status)
+        elif isinstance(social_status, dict):
+            self.social_status = social_status
         else:
-            self.social_status = json.loads(raw_properties['SocialStatus_j'])
+            self.social_status = None
 
         background = kairos_p.get('avatarBackground')
         if background and not isinstance(background, list):

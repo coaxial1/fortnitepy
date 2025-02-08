@@ -284,7 +284,7 @@ class Presence:
         The playercount of the friend's server.
     """
 
-    __slots__ = ('client', 'available', 'away', 'friend', 'platform',
+    __slots__ = ('data', 'client', 'available', 'away', 'friend', 'platform',
                  'received_at', 'status', 'in_kairos', 'playing', 'joinable',
                  'has_voice_support', 'session_id',
                  'has_properties', 'avatar', 'homebase_rating', 'lfg',
@@ -298,7 +298,7 @@ class Presence:
                  available: bool,
                  away: bool,
                  data: dict) -> None:
-        print("PRESENCE OF " + from_id + ": " + json.dumps(data))
+        self.data = data
         self.client = client
         self.available = available
         self.away = away

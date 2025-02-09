@@ -3209,6 +3209,7 @@ class PartyBase:
         self._update_invites(data.get('invites', []))
         self._update_config(data.get('config'))
         self.meta = PartyMeta(self, data['meta'])
+        self._raw = data
 
     def __str__(self) -> str:
         return self.id
@@ -3218,6 +3219,11 @@ class PartyBase:
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    @property
+    def raw(self) -> dict:
+        """:class:`dict`: The raw data of the party."""
+        return self._raw
 
     @property
     def client(self) -> 'Client':
